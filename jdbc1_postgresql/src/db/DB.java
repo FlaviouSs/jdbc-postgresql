@@ -43,9 +43,14 @@ public class DB {
 		try(FileInputStream fs = new FileInputStream("db.properties")){
 			Properties props = new Properties();
 			props.load(fs);
+			props.setProperty("user", System.getenv("DB_USER"));
+			props.setProperty("password", System.getenv("DB_PASSWORD"));
 			return props;
 		}
 		catch(IOException e) {
+			throw new DBException(e.getMessage());
+		}
+		catch(NullPointerException e) {
 			throw new DBException(e.getMessage());
 		}
 	}
